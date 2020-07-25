@@ -1,0 +1,48 @@
+
+<section fxLayout="column" fxLayoutAlign="center center">
+
+  <p>Stripe Card Element for Angular</p>
+
+  <!-- Angular's template driven form -->
+  <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px" (ngSubmit)="pay()" #form="ngForm">
+
+    <!-- MatFormField applied to a native input control -->
+    <mat-form-field>
+
+      <mat-label>Name</mat-label>
+      
+      <input matInput [(ngModel)]="name" name="name" required #formName="ngModel">
+
+      <mat-error *ngIf="!formName.valid">Please provide your name for billing purposes</mat-error>
+      
+      <mat-hint>How do we call you</mat-hint>
+  
+    </mat-form-field>
+
+    <!-- MatFormField applied to a stripe card element -->
+    <mat-form-field>
+
+      <mat-label>Credit card</mat-label>
+
+      <wm-stripe-card matStripe [(ngModel)]="card" name="card" required #formCard></wm-stripe-card>
+   
+      <mat-error *ngIf="formCard.error">{{ formCard.error.message }}</mat-error>
+
+      <mat-hint>Powered by Stripe</mat-hint>
+   
+    </mat-form-field>
+
+    <button mat-flat-button type="submit" color="primary" [disabled]="!(form.valid && formCard.complete)">
+      Pay Now
+    </button>
+
+   <mat-checkbox (change)="$event.checked ? form.control.disable() : form.control.enable()">Disabled</mat-checkbox>
+
+  </form>
+
+  <br><br>  
+
+  <p>{{ formCard.value | json }}</p>
+
+</section>
+
